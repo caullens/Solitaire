@@ -1,52 +1,41 @@
-"use strict";
-
-/* Classes */
-const Game = require('./game');
-const Deck = require('./deck');
-const Column = require('./column');
-const SuitPile = require('./suit-piles');
-const Pile = require('./pile');
-
 /* Global variables */
-var canvas = document.getElementById('screen');
-var game = new Game(canvas, update, render);
-var deck = new Deck();
+let canvas = document.getElementById('screen');
+const game = new Game(canvas, update, render);
+let deck = new Deck();
 deck.shuffle();
-var columns = [];
-for (var i = 0; i < 7; i++) {
+let columns = [];
+for (let i = 0; i < 7; i++) {
   columns.push(new Column(i));
 }
-var suitPiles = [];
-for (var i = 0; i < 4; i++) {
+let suitPiles = [];
+for (let i = 0; i < 4; i++) {
   suitPiles.push(new SuitPile(i));
 }
-var pile = new Pile();
+let pile = new Pile();
 
 dealStart();
 
 
 /* Background Resources */
-var base = new Image();
+let base = new Image();
 base.src = "assets/base.png";
-var sBase = new Image();
+let sBase = new Image();
 sBase.src = "assets/sBase.png";
-var hBase = new Image();
+let hBase = new Image();
 hBase.src = "assets/hBase.png";
-var cBase = new Image();
+let cBase = new Image();
 cBase.src = "assets/cBase.png";
-var dBase = new Image();
+let dBase = new Image();
 dBase.src = "assets/dBase.png";
-var refresh = new Image();
+let refresh = new Image();
 refresh.src = "assets/refresh.png";
 
 window.onmousedown = function (event) {
-  console.log("Click detected")
   event.preventDefault();
 }
 
 canvas.onclick = function (event) {
   event.preventDefault();
-  console.log(event.clientX,event.clientY);
   if (event.clientX < 117 && event.clientX > 10) {
     if (event.clientY < 227 && event.clientY > 10) {
       if (deck.deck.length < 1) {
@@ -55,7 +44,6 @@ canvas.onclick = function (event) {
       else pile.push(deck.deal(true));
     }
     if (event.clientY < pile.cards[pile.cards.length - 1].position.y + 140 && event.clientY > pile.cards[pile.cards.length - 1].position.y) {
-      console.log(pile.cards[pile.cards.length - 1].position.y);
       if(findMoveLocation(pile.cards[pile.cards.length - 1])) pile.pop();
     }
   }
@@ -75,7 +63,7 @@ function findMoveLocation(card) {
 }
 
 
-var currentIndex, currentX, currentY;
+let currentIndex, currentX, currentY;
 canvas.onmousemove = function (event) {
 }
 
@@ -84,7 +72,7 @@ canvas.onmousemove = function (event) {
  * Advances the game in sync with the refresh rate of the screen
  * @param {DOMHighResTimeStamp} timestamp the current time
  */
-var masterLoop = function (timestamp) {
+let masterLoop = function (timestamp) {
   game.loop(timestamp);
   window.requestAnimationFrame(masterLoop);
 }
@@ -147,9 +135,9 @@ function renderBG(elapsedTime, ctx) {
 }
 
 function dealStart() {
-  for (var i = 0; i < columns.length; i++) {
-    for (var j = 0; j < i + 1; j++) {
-      var card = deck.deal();
+  for (let i = 0; i < columns.length; i++) {
+    for (let j = 0; j < i + 1; j++) {
+      let card = deck.deal();
       if (j >= i) card.turned = true;
       columns[i].push(card);
     }
